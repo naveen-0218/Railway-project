@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./railway.db"
+}
+
+model Station {
+  id         Int        @id @default(autoincrement())
+  name       String
+  code       String     @unique
+  city       String
+  latitude   Float
+  longitude  Float
+  facilities Facility[]
+}
+
+model Facility {
+  id                   Int     @id @default(autoincrement())
+  stationId            Int
+  name                 String
+  type                 String
+  platform             String?
+  floor                String?
+  latitude             Float
+  longitude            Float
+  wheelchairAccessible Boolean @default(false)
+  liftAvailable        Boolean @default(false)
+  rampAvailable        Boolean @default(false)
+  station              Station @relation(fields: [stationId], references: [id])
+}
